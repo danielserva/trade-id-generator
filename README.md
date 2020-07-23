@@ -36,31 +36,32 @@ $ python -m pytest
 Task
 ====
 
-This repo contains tests for the ID generation code, the task is
-to make these tests pass.
+This repo contains tests for code to generate the IDs. You will need to
+complete the code in `identity/generation.py`
 
-The tests in `master` will run uniqueness and simple format checks.
+The tests in `python-test` will run uniqueness and simple format checks.
 
 After you have made these tests pass, please commit your changes
-to the `master` branch.
+to the `python-test` branch.
 
 There are further branches with more tests. Merge one branch at
-a time into `master`, then make the tests from that branch pass,
-and commit your changes to `master`.
+a time into `python-test`, and commit your changes to `python-test`.
 
 The branches are:
 
-`origin/bulk-generation` - adds tests for a bulk generation function
+`origin/python-bulk-generation` - adds tests for a bulk generation function
 to generate many IDs at once, and improves the uniqueness and formatting
 tests.
 
-`origin/concurrency` - tests that the code can handle many concurrent
-requests.
+`origin/python-concurrency` - tests that the code can handle many concurrent
+requests in a multithreaded environment.
 
-`origin/persistence-and-fault-tolerance` - tests that the code can
+`origin/python-persistence-and-fault-tolerance` - tests that the code can
 recover from crashes and restarts without duplicating IDs.
 
-Your aim is to make as many of the tests pass as possible within 3 hours.
+`origin/python-performance` - tests the code performance.
+
+Your aim is to come up with the best solution you can within 3 hours.
 
 Once you have finished, please create a git bundle to send back to
 us with this command:
