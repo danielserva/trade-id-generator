@@ -1,0 +1,2 @@
+Repository of technical tests.
+
