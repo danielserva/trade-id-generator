@@ -7,10 +7,9 @@ from concurrent.futures import ThreadPoolExecutor
 from identity.generation import generate, generate_bulk
 
 ID_CHARACTERS = '0ABCDEFG'
-MAX_ID_COUNT = 7 ** len(ID_CHARACTERS) - 1
 
 
-@pytest.mark.timeout(180)
+@pytest.mark.timeout(6000)
 def test_generate_bulk_performance():
     """This needs to run in a clean enironment, so if you are using any
     external persistence, clear it before running this."""
