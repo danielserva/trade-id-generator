@@ -23,7 +23,7 @@ def test_restarting_process_does_not_duplicate_ids():
     process = subprocess.Popen(
         ["/usr/bin/env", "python", "-u", "scripts/generate.py"],
         stdout=subprocess.PIPE,
-        env={'PYTHONPATH': os.getcwd() + ':'.join(sys.path)})
+        env=env)
     time.sleep(2)
     process.kill()
     for incoming_id in process.stdout.readlines():
