@@ -30,9 +30,7 @@ $ python -m pytest
 
 ## Task
 
-This repo contains tests for code to generate the IDs - you will need to complete the code in `identity/generation.py`. 
-
-There are multiple branches with different tests that you can use to understand the requirements that we are looking for. For example, the tests in `python-test` will run uniqueness and simple format checks.
+This repo contains tests for code to generate the IDs using the functions provided inside the `identity/generation.py` file as an entry point. Your challenge is completing the code, not limited to that specific script or functions.
 
 You can merge one branch at a time into the `python-test` branch, run the test suite, improve your solution and commit the changes before merging the next one. 
 
@@ -50,7 +48,7 @@ recover from crashes and restarts without duplicating IDs.
 
 1. `origin/python-performance` - tests the code performance.
 
-**Important:** the tests above are there to give you an idea of the requirements that we would be looking at when reviewing your solution - it does not mean that passing the tests is the goal of the exercise. We have candidates quickly implementing a solution that does not meet the requirements but has the tests passing; think how you would solve this problem in a real-life scenario.
+**Important:** the tests above are there to guide you through the requirements and are not exhaustive - think about how you would solve this problem in a real-life scenario.
 
 Finally, once you have finished, please create a git bundle to send back to
 us with this command:
