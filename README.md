@@ -1,20 +1,15 @@
-================
-Identity Service
-================
+# Identity Service
 
 FX Labs has many different systems generating currency trades.
-So that our clients can look up individual trades easily, we
-want to assign each trade its own unique 7 character alphanumeric
-human readable ID.
+So that our clients can easily look up individual trades, we
+want to assign each trade its unique 7-character alphanumeric
+human-readable ID.
 
 Example: B762F00
 
+An API will use this package to create new unique IDs on demand.
 
-This package will be used by an API to create new IDs on demand.
-
-
-Setup
-=====
+## Setup
 
 You will need a Python environment with the package requirements
 installed.
@@ -33,37 +28,31 @@ You can run the tests with:
 $ python -m pytest
 ```
 
-Task
-====
+## Task
 
-This repo contains tests for code to generate the IDs. You will need to
-complete the code in `identity/generation.py`
+This repo contains tests for code to generate the IDs - you will need to complete the code in `identity/generation.py`. 
 
-The tests in `python-test` will run uniqueness and simple format checks.
+There are multiple branches with different tests that you can use to understand the requirements that we are looking for. For example, the tests in `python-test` will run uniqueness and simple format checks.
 
-After you have made these tests pass, please commit your changes
-to the `python-test` branch.
-
-There are further branches with more tests. Merge one branch at
-a time into `python-test`, and commit your changes to `python-test`.
+You can merge one branch at a time into the `python-test` branch, run the test suite, improve your solution and commit the changes before merging the next one. 
 
 The branches are:
 
-`origin/python-bulk-generation` - adds tests for a bulk generation function
+1. `origin/python-bulk-generation` - adds tests for a bulk generation function
 to generate many IDs at once, and improves the uniqueness and formatting
 tests.
 
-`origin/python-concurrency` - tests that the code can handle many concurrent
+1. `origin/python-concurrency` - tests that the code can handle many concurrent
 requests in a multithreaded environment.
 
-`origin/python-persistence-and-fault-tolerance` - tests that the code can
+1. `origin/python-persistence-and-fault-tolerance` - tests that the code can
 recover from crashes and restarts without duplicating IDs.
 
-`origin/python-performance` - tests the code performance.
+1. `origin/python-performance` - tests the code performance.
 
-Your aim is to come up with the best solution you can within 3 hours.
+**Important:** the tests above are there to give you an idea of the requirements that we would be looking at when reviewing your solution - it does not mean that passing the tests is the goal of the exercise. We have candidates quickly implementing a solution that does not meet the requirements but has the tests passing; think how you would solve this problem in a real-life scenario.
 
-Once you have finished, please create a git bundle to send back to
+Finally, once you have finished, please create a git bundle to send back to
 us with this command:
 
 ```
@@ -71,3 +60,17 @@ $ git bundle create repo.bundle --all
 ```
 
 Good luck!
+
+## FAQ
+
+**1. Can I use external libraries or dependencies?** Yes, you can! However, ensure that you can help us quickly set up the environment to run your solution.
+
+**2. Can I add more tests to the test suite?** Actually, you shouldn't rely only on the tests we provide. Feel comfortable adding/improving the tests that are there.
+
+**3. I quickly solved the problem in a few minutes; what is happening?** The chances you are not carefully looking at the problem are high, even if all the tests pass. Remember to exercise the solution in terms of production readiness, concurrency, performance, and fault tolerance.
+
+**4. How much time do I have to solve the problem?** The faster we receive the solution, the faster we can review it and schedule the next step. It will be perfect not to take more than four days.
+
+**5. Should I use the less possible code to solve the problem?** You should follow the Python language's clean code practices and conventions. Other people will review your code, so the readability of the code will be evaluated by design.
+
+**6. I have multiple solutions. Should I send all of them to you?** We discourage sending various solutions to us because you will be delegating the decision to choose the best one - which is not good in a real-life scenario.
