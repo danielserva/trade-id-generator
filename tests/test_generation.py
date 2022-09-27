@@ -40,11 +40,16 @@ def test_ids_are_unique_generated_in_bulk():
 def test_concurrent_bulk_generation():
     generated_ids = set()
     bulk_args = []
-    for _ in range(0,2000):
+    for _ in range(0, 2000):
         bulk_args.append(2500)
 
-    with ThreadPoolExecutor(max_workers=15) as pool:
-        ids = list(pool.map(generate_bulk, bulk_args))
+    def consumer_function(ids):
+        return list(ids)
+
+    with ThreadPoolExecutor(max_workers=9) as pool:
+        generators = list(pool.map(generate_bulk, bulk_args))
+        ids = list(pool.map(consumer_function, generators))
+
         for chunk in ids:
             generated_ids.update(chunk)
 
