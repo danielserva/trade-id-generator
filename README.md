@@ -63,11 +63,11 @@ Good luck!
 
 **1. Can I use external libraries or dependencies?** Yes, you can! However, ensure that you can help us quickly set up the environment to run your solution.
 
-**2. Can I add more tests to the test suite?** Actually, you shouldn't rely only on the tests we provide. Feel comfortable adding/improving the tests that are there.
+**2. Can I add more tests to the test suite?** Actually, you shouldn't rely only on the tests we provide but do look at them to understand what might be important. Feel comfortable adding/improving the tests that are there.
 
 **3. I quickly solved the problem in a few minutes; what is happening?** The chances you are not carefully looking at the problem are high, even if all the tests pass. Remember to exercise the solution in terms of production readiness, concurrency, performance, and fault tolerance.
 
-**4. How much time do I have to solve the problem?** The faster we receive the solution, the faster we can review it and schedule the next step. It will be perfect not to take more than four days.
+**4. How much time do I have to solve the problem?** It may take a few hours to implement your solution, but perhaps spread over a number of days. The faster we receive the solution, the faster we can review it and schedule the next step - it will be perfect not to take more than four days.
 
 **5. Should I use the less possible code to solve the problem?** You should follow the Python language's clean code practices and conventions. Other people will review your code, so the readability of the code will be evaluated by design.
 
