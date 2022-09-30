@@ -44,8 +44,13 @@ def test_concurrent_bulk_generation():
     for _ in range(0, 2000):
         bulk_args.append(2500)
 
-    with ThreadPoolExecutor(max_workers=15) as pool:
-        ids = list(pool.map(generate_bulk, bulk_args))
+    def consumer_function(ids):
+        return list(ids)
+
+    with ThreadPoolExecutor(max_workers=9) as pool:
+        generators = list(pool.map(generate_bulk, bulk_args))
+        ids = list(pool.map(consumer_function, generators))
+
         for chunk in ids:
             generated_ids.update(chunk)
 
