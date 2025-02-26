@@ -67,7 +67,7 @@ Good luck!
 
 **3. I quickly solved the problem in a few minutes; what is happening?** The chances you are not carefully looking at the problem are high, even if all the tests pass. Remember to exercise the solution in terms of production readiness, concurrency, performance, and fault tolerance.
 
-**4. How much time do I have to solve the problem?** It may take a few hours to implement your solution, but perhaps spread over a number of days. The faster we receive the solution, the faster we can review it and schedule the next step - it will be perfect not to take more than two days.
+**4. How much time do I have to solve the problem?** It may take a few hours to implement your solution, but perhaps spread over a number of days. The faster we receive the solution, the faster we can review it and schedule the next step - it will be perfect not to take more than four days.
 
 **5. Should I use the less possible code to solve the problem?** You should follow the Python language's clean code practices and conventions. Other people will review your code, so the readability of the code will be evaluated by design.
 
