@@ -37,6 +37,7 @@ def test_ids_are_unique_generated_in_bulk():
         generated_count += 1
         assert len(generated_ids) == generated_count * 1000
 
+
 def test_concurrent_bulk_generation():
     generated_ids = set()
     bulk_args = []
