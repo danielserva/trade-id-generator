@@ -1,7 +1,7 @@
 import os
 import sys
 
-from identity.generation import generate_bulk
+from app.identity.generation import generate_bulk
 
 
 while True:

@@ -4,7 +4,7 @@ import re
 import mock
 import pytest
 from concurrent.futures import ThreadPoolExecutor
-from identity.generation import generate, generate_bulk
+from app.identity.generation import generate, generate_bulk
 
 ID_CHARACTERS = '0ABCDEFG'
 

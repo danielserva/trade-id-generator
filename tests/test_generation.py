@@ -3,8 +3,8 @@
 import re
 import pytest
 from concurrent.futures import ThreadPoolExecutor
-from identity.generation import generate, generate_bulk
-from identity.constants import ID_CHARACTERS
+from app.identity.generation import generate, generate_bulk
+from app.identity.constants import ID_CHARACTERS
 
 format_check = re.compile('^[' + ID_CHARACTERS + ']{7}$')
 
