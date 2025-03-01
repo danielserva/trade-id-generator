@@ -19,4 +19,8 @@ async def root():
     return {
         "name": "Trade Id generator",
         "description": "This application generates unique human readable Ids for currency trades",
+        "endpoints": [
+            {"path": "/generate", "method": "GET", "description": "Generate a single trade ID"},
+            {"path": "/generate/bulk", "method": "POST", "description": "Generate multiple trade IDs in bulk"}
+        ]
     }
