@@ -8,6 +8,7 @@ from sqlmodel.pool import StaticPool
 from app.identity.generation import TradeIdGenerator
 from app.identity.constants import ID_CHARACTERS
 from app.database import GeneratedId
+
 trade_id_generator = TradeIdGenerator()
 format_check = re.compile('^[' + ID_CHARACTERS + ']{7}$')
 
@@ -59,11 +60,14 @@ def disabled_test_concurrent_bulk_generation():
         "sqlite://",
         connect_args={"check_same_thread": False},
         poolclass=StaticPool)
-    # Enable WAL mode for better concurrency
-    # ATTENTION: THIS IS SPECIFIC FOR SQLITE
+    
+    """Enable WAL mode for better concurrency
+    ATTENTION: THIS IS SPECIFIC FOR SQLITE"""
     with engine.connect() as conn:
         conn.exec_driver_sql("PRAGMA journal_mode=WAL;")
+    
     SQLModel.metadata.create_all(engine)
+    
     for _ in range(0, 20):
         bulk_args.append(250)
 
