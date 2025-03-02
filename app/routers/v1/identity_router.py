@@ -1,6 +1,10 @@
+from typing import Annotated
 from fastapi import APIRouter, Depends
+from sqlmodel import Session
 from app.identity.generation import TradeIdGenerator
-from app.main import SessionDep
+from app.dependencies import get_session
+
+SessionDep = Annotated[Session, Depends(get_session)]
 
 trade_id_generator = TradeIdGenerator()
 router = APIRouter(
