@@ -24,8 +24,8 @@ def session_fixture():
     with Session(engine) as session:
         yield session
 
-@pytest.mark.timeout(60)
-def disabled_test_generate_bulk_performance(session: Session):
+@pytest.mark.timeout(6000)
+def test_generate_bulk_performance(session: Session):
     """This needs to run in a clean enironment, so if you are using any
     external persistence, clear it before running this."""
     with mock.patch('app.identity.generation.ID_CHARACTERS', ID_CHARACTERS):
