@@ -142,3 +142,4 @@ identity.db
 
 # persistence test database
 testing.db
+testing.db-journal

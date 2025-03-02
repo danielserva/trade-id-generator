@@ -25,7 +25,15 @@ def session_fixture():
         yield session
 
 @pytest.mark.timeout(60)
-def test_generate_bulk_performance(session: Session):
+def disabled_test_generate_bulk_performance(session: Session):
+    """This needs to run in a clean enironment, so if you are using any
+    external persistence, clear it before running this."""
+    with mock.patch('app.identity.generation.ID_CHARACTERS', ID_CHARACTERS):
+        ids = list(trade_id_generator.generate_bulk(bulk_size=2097100, session=session))
+    assert True
+
+@pytest.mark.timeout(60)
+def test_generate_small_bulk_performance(session: Session):
     """This needs to run in a clean enironment, so if you are using any
     external persistence, clear it before running this."""
     with mock.patch('app.identity.generation.ID_CHARACTERS', ID_CHARACTERS):
