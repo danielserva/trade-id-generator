@@ -1,12 +1,16 @@
 from contextlib import asynccontextmanager
-from fastapi import FastAPI
+from typing import Annotated
+from fastapi import Depends, FastAPI
 from .routers.v1 import identity_router
-from .database import create_db_and_tables
+from .database import create_db_and_tables, engine
+from sqlmodel import Session
 import uvicorn
 
 def get_session():
     with Session(engine) as session:
         yield session
+
+SessionDep = Annotated[Session, Depends(get_session)]
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):

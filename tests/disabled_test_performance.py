@@ -4,15 +4,16 @@ import re
 import mock
 import pytest
 from concurrent.futures import ThreadPoolExecutor
-from app.identity.generation import generate, generate_bulk
+from app.identity.generation import TradeIdGenerator
 
 ID_CHARACTERS = '0ABCDEFG'
 
+trade_id_generator = TradeIdGenerator()
 
 @pytest.mark.timeout(60)
 def disabled_test_generate_bulk_performance():
     """This needs to run in a clean enironment, so if you are using any
     external persistence, clear it before running this."""
     with mock.patch('identity.generation.ID_CHARACTERS', ID_CHARACTERS):
-        ids = list(generate_bulk(20971))
+        ids = list(trade_id_generator.generate_bulk(20971))
     assert True
