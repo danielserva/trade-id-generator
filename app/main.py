@@ -1,13 +1,23 @@
-from fastapi import FastAPI, HTTPException, Query
-from pydantic import BaseModel, Field, validator
-from typing import List, Set
+from contextlib import asynccontextmanager
+from fastapi import FastAPI
 from .routers.v1 import identity_router
+from .database import create_db_and_tables
 import uvicorn
+
+def get_session():
+    with Session(engine) as session:
+        yield session
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    create_db_and_tables()
+    yield
 
 app = FastAPI(
     title="Trade ID Generator API",
     description="This application generates random 7 character human-readable IDs. It can generate in a single or bulk mode",
-    version="1.0.0"
+    version="1.0.0",
+    lifespan=lifespan
 )
 
 # API routes
