@@ -143,3 +143,8 @@ identity.db
 # persistence test database
 testing.db
 testing.db-journal
+testing_concurrent.db
+testing_concurrent.db-journal
+
+# vscode project folder
+.vscode/

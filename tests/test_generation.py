@@ -52,12 +52,15 @@ def test_ids_are_unique_generated_in_bulk(session: Session):
         generated_count += 1
         assert len(generated_ids) == generated_count * 1000
 
-
+""" Disabled due to Sqlite concurrency limitation.
+Re-enable after replacing sqlite with a more concurrency friendly database like PostgreSql """
 def disabled_test_concurrent_bulk_generation():
     generated_ids = set()
     bulk_args = []
+    sqlite_file_name = "testing_concurrent.db"
+    sqlite_url = f"sqlite:///{sqlite_file_name}"
     engine = create_engine(
-        "sqlite://",
+        sqlite_url,
         connect_args={"check_same_thread": False},
         poolclass=StaticPool)
     
@@ -65,25 +68,28 @@ def disabled_test_concurrent_bulk_generation():
     ATTENTION: THIS IS SPECIFIC FOR SQLITE"""
     with engine.connect() as conn:
         conn.exec_driver_sql("PRAGMA journal_mode=WAL;")
+        conn.exec_driver_sql("PRAGMA synchronous=NORMAL;")
+        conn.exec_driver_sql("PRAGMA busy_timeout=5000;")
     
     SQLModel.metadata.create_all(engine)
     
-    for _ in range(0, 20):
-        bulk_args.append(250)
+    # Create fewer but larger batches
+    for _ in range(5): #  Reduce from 2000 to 5
+        bulk_args.append(10000) # 10k per batch instead of 2.5k
 
     def generate_with_new_session(count):
+        local_generator = TradeIdGenerator()
         with Session(engine) as session:
-            return trade_id_generator.generate_bulk(bulk_size=count, session=session)
-
+            return local_generator.generate_bulk(bulk_size=count, session=session)
 
     def consumer_function(ids):
         return list(ids)
 
-    with ThreadPoolExecutor(max_workers=9) as pool:
+    with ThreadPoolExecutor(max_workers=2) as pool:
         generators = list(pool.map(generate_with_new_session, bulk_args))
         ids = list(pool.map(consumer_function, generators))
 
         for chunk in ids:
             generated_ids.update(chunk)
 
-    assert len(generated_ids) == 5000
+    assert len(generated_ids) == 50000

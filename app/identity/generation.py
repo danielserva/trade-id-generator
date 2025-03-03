@@ -5,37 +5,46 @@ from typing import List, Set
 from sqlmodel import Session, select
 from app.database import GeneratedId
 from .constants import ID_CHARACTERS
+from app.dependencies import cached_ids
 
-# Generates unique 7 character human-readable ID
+# Generates unique human-readable ID
 class TradeIdGenerator:
     def __init__(self):
-        # Local cache for performance optimization
-        self._cached_ids: Set[str] = set()
+        
         # Pre-calculate character set length for optimization
         self.valid_char_length = len(ID_CHARACTERS)
+        self.id_length = 7
+        """retry logic for concurrent access."""
+        self.max_retries = 10
+        self.retry_count = 0
+    
 
-    def generate(self, session: Session):
-        generated_id = ''
-        is_unique = False
-        while not is_unique:
-            for _ in range(7):
+    def generate(self, session: Session) -> str:
+        for _ in range(self.max_retries):
+            generated_id = ''
+            for _ in range(self.id_length):
                 generated_id = generated_id + random.choice(ID_CHARACTERS)
             if self._is_id_unique(generated_id, session):
                 self._save_id(generated_id, session)
-                is_unique = True
-            else:
-                generated_id = ''
-        return generated_id
+                return generated_id
+        # If we've exhausted retries, raise an error
+        raise RuntimeError(f"Failed to generate a unique trade ID after {self.max_retries} attempts")
 
-    # Generates unique 7 character human-readable IDs in bulk
-    def generate_bulk(self, bulk_size, session: Session) -> List[str]:
+    # Generates unique human-readable IDs in bulk
+    def generate_bulk(self, bulk_size, session: Session) -> list[str]:
+        if (len(ID_CHARACTERS) ** self.id_length) < bulk_size:
+            return []
+
+        if bulk_size > 9999:
+            return self._generate_bulk_optimized(bulk_size=bulk_size, session=session)
+
         generated_ids = []
         for _ in range(bulk_size):
             generated_ids.append(self.generate(session))
         return generated_ids
     
     """Optmized method for generating large numbers of IDs"""
-    def _generate_bulk_optimized(self, bulk_size: int, session: Session) -> List[str]:
+    def _generate_bulk_optimized(self, bulk_size: int, session: Session) -> list[str]:
         result_ids = []
 
         # Use multiple timestamp patterns to distribute IDs
@@ -61,7 +70,7 @@ class TradeIdGenerator:
             for _ in range(min(batch_size, remaining * 2)):
                 random_part = ''.join(random.choice(ID_CHARACTERS) for _ in range(5))
                 candidate_id = ts_pattern + random_part
-                candidates.add(candidate_id[:7])
+                candidates.add(candidate_id[:self.id_length])
 
             # Filter out IDs that are already used by checking against DB
             new_ids = []
@@ -78,7 +87,7 @@ class TradeIdGenerator:
                 session.commit()
             
                 # Update local cache
-                self._cached_ids.update(new_ids)
+                cached_ids.update(new_ids)
 
                 # Add to results
                 result_ids.extend(new_ids)
@@ -105,17 +114,18 @@ class TradeIdGenerator:
 
 
     # Persists trade id in database
-    def _save_id(self, trade_id: str, session: Session):
+    def _save_id(self, trade_id: str, session: Session) -> GeneratedId:
         new_trade_id = GeneratedId(id=trade_id)
         session.add(new_trade_id)
         session.commit()
         # add to set fo cached ids
-        self._cached_ids.add(trade_id)
+        cached_ids.add(trade_id)
+        return new_trade_id
 
     # Check if the trade id is unique
     def _is_id_unique(self, trade_id: str, session: Session) -> bool:
         # first check local cached ids
-        if trade_id in self._cached_ids:
+        if trade_id in cached_ids:
             return False
         # if trade id is not in the cache, query the database
         statement = select(GeneratedId).where(GeneratedId.id == trade_id)

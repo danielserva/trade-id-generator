@@ -12,7 +12,6 @@ from app.database import GeneratedId
 
 ID_CHARACTERS = '0ABCDEFG'
 
-trade_id_generator = TradeIdGenerator()
 
 @pytest.fixture(name="session")
 def session_fixture():
@@ -29,6 +28,7 @@ def test_generate_bulk_performance(session: Session):
     """This needs to run in a clean enironment, so if you are using any
     external persistence, clear it before running this."""
     with mock.patch('app.identity.generation.ID_CHARACTERS', ID_CHARACTERS):
+        trade_id_generator = TradeIdGenerator()
         ids = list(trade_id_generator.generate_bulk(bulk_size=2097100, session=session))
     assert True
 
@@ -37,5 +37,6 @@ def test_generate_small_bulk_performance(session: Session):
     """This needs to run in a clean enironment, so if you are using any
     external persistence, clear it before running this."""
     with mock.patch('app.identity.generation.ID_CHARACTERS', ID_CHARACTERS):
+        trade_id_generator = TradeIdGenerator()
         ids = list(trade_id_generator.generate_bulk(bulk_size=20971, session=session))
     assert True
